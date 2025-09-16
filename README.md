@@ -1,182 +1,150 @@
-## Stock Price Data Warehouse
+# Stock Price Data Warehouse
 
-### Overview
+## Overview
 
-This project builds a data warehouse for stock price data, simulating financial analytics for Barclays. It uses PySpark for data extraction, PostgreSQL for storage, DBT for transformations, and Apache Airflow for orchestration.
+This project simulates a financial analytics pipeline for stock price data, inspired by real-world use cases like Barclays’ data engineering workflows. It builds a data warehouse using PySpark, PostgreSQL, DBT, and Apache Airflow. The pipeline automates the extraction, cleaning, enrichment, transformation, and storage of stock price data, enabling analysts and traders to derive actionable insights. 📊
 
-### Features
+---
 
+## Problem Solved
 
+Raw stock market data often contains missing or inconsistent values and lacks features for trend analysis or anomaly detection. This pipeline addresses these issues by:
 
+* **Cleaning and validating** stock data.
+* **Computing daily aggregates** (average price, total volume).
+* **Adding features** like moving averages and anomaly flags for abnormal price changes.
+* **Centralizing all data** in PostgreSQL for analytics and dashboarding.
 
+---
 
-- Data: Synthetic dataset of 100K stock price records (columns: stock_id, date, price, volume).
+## Features
 
+### Data
 
+* Synthetic dataset of **100K+ stock price records** with sequential daily prices.
+* Includes `stock_id`, `date`, `price`, and `volume`.
 
-- ETL Process:
+### ETL Process
 
+* **Extract:** Loads CSV or Parquet data using **PySpark**.
+* **Transform:** Cleans and enriches data (moving averages, anomaly flags) using **PySpark** and **DBT**.
+* **Load:** Stores results in a **PostgreSQL** data warehouse.
 
+### Orchestration
 
+* **Airflow DAG** automates the pipeline with logging and error handling.
 
+### Scalability
 
-- Extract: Loads CSV data using PySpark.
+* **Dockerized environment** ensures reproducibility and isolation.
 
+### Advanced Features
 
+* **7-day and 30-day moving averages** for trend analysis.
+* **Daily anomaly detection** for sudden price spikes/drops (>10%).
+* **Audit logs** for pipeline runs and data quality checks.
 
-- Transform: Cleans data with PySpark and aggregates (avg_price, total_volume) using DBT.
+---
 
+## Technologies
 
+* **PySpark:** Efficient data extraction, cleaning, and enrichment.
+* **PostgreSQL:** Reliable data warehousing and querying.
+* **DBT:** SQL-based transformations and analytics-ready fact tables.
+* **Apache Airflow:** Workflow orchestration and scheduling.
+* **Docker:** Containerized environment for reproducibility.
+* **Faker + Pandas:** Synthetic stock data generation for testing and development.
 
-- Load: Stores results in a PostgreSQL data warehouse.
-
-
-
-- Orchestration: Airflow DAG automates the pipeline.
-
-
-
-- Environment: Dockerized PySpark setup.
-
-### Technologies
-
-
-
-
-
-- PySpark: Data extraction and cleaning.
-
-
-
-- PostgreSQL: Data warehousing.
-
-
-
-- DBT: SQL-based transformations.
-
-
-
-- Apache Airflow: Workflow orchestration.
-
-
-
-- Docker: Containerized environment.
+---
 
 ## Setup Instructions
 
-
-
-
-
-### Prerequisites:
-
-
-
-
-
-- Docker and Docker Compose
-
-
-
-- Python 3.9+
-
-
-
-- PostgreSQL (local or Docker)
-
-
-
-- Apache Airflow (local or Astronomer free tier)
-
-
-
-- DBT (pip install dbt-core dbt-postgres)
-
-
-
-### Steps:
-```bash
-# Clone repository
-git clone https://github.com/SanjeevikumarWD/stock-price-data-warehouse.git
-cd stock-price-data-warehouse
-
-# Build Docker image
-docker build -t pyspark-etl -f docker/Dockerfile .
-
-# Start PostgreSQL
-docker run -d --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
-
-# Initialize Airflow (local)
-pip install apache-airflow
-airflow db init
-airflow webserver --port 8080 &
-airflow scheduler &
-
-# Copy DAG to Airflow
-cp airflow/dags/stock_etl_dag.py ~/airflow/dags/
-
-# Initialize DBT
-cd dbt
-dbt init --skip-profile-setup
-cp ../profiles.yml .
-
-# Run ETL
-docker run --network host -v $(pwd)/data:/app/data -v $(pwd)/sql:/app/sql -v $(pwd)/dbt:/app/dbt pyspark-etl
-```
-
-
-### Access Results:
-
-
-
-
-
-- View Airflow UI at http://localhost:8080.
-
-
-
-- Query PostgreSQL: psql -h localhost -U postgres -d postgres.
-
-### Results
-
-
-
-
-
-- Processed 100K stock price records.
-
-
-
-- Created a fact table with average price and total volume per stock, stored in PostgreSQL.
-
-
-
-- Automated pipeline with Airflow and DBT.
-
-### Learning Outcomes
-
-
-
-
-
-- Mastered PySpark, DBT, PostgreSQL, and Airflow for data warehousing.
-
-
-
-- Built a financial analytics pipeline relevant to Barclays' data engineering roles.
-
-### Future Improvements
-
-
-
-
-
-- Integrate AWS S3 for scalability.
-
-
-
-- Add data governance tools like Alation.
-
-
-
-Implement advanced DBT tests.
+### Prerequisites
+
+* Docker and Docker Compose
+* Python 3.9+
+* PostgreSQL (local or Docker)
+* Apache Airflow (local or Astronomer free tier)
+* DBT (`pip install dbt-core dbt-postgres`)
+
+### Steps
+
+1.  **Clone repository**
+    ```bash
+    git clone [https://github.com/SanjeevikumarWD/stock-price-data-warehouse.git](https://github.com/SanjeevikumarWD/stock-price-data-warehouse.git)
+    cd stock-price-data-warehouse
+    ```
+
+2.  **Build Docker image**
+    ```bash
+    docker build -t pyspark-etl -f docker/Dockerfile .
+    ```
+
+3.  **Start PostgreSQL**
+    ```bash
+    docker run -d --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
+    ```
+
+4.  **Initialize Airflow**
+    ```bash
+    pip install apache-airflow
+    airflow db init
+    airflow webserver --port 8080 &
+    airflow scheduler
+    ```
+
+5.  **Copy DAG to Airflow**
+    ```bash
+    cp airflow/dags/stock_etl_dag.py ~/airflow/dags/
+    ```
+
+6.  **Initialize DBT**
+    ```bash
+    cd dbt
+    dbt init --skip-profile-setup
+    cp ../profiles.yml .
+    ```
+
+7.  **Run ETL**
+    ```bash
+    docker run --network host -v $(pwd)/data:/app/data -v $(pwd)/sql:/app/sql -v $(pwd)/dbt:/app/dbt pyspark-etl
+    ```
+
+---
+
+## Access Results
+
+* **Airflow UI:** http://localhost:8080
+* **PostgreSQL:** `psql -h localhost -U postgres -d postgres`
+
+---
+
+## Results
+
+* Processed **100K+ stock price records**.
+* Created a fact table with:
+    * `avg_price`
+    * `total_volume`
+    * 7-day & 30-day moving averages
+    * `anomaly_flag` for sudden price changes
+* Automated ETL pipeline with **Airflow and DBT**.
+* Ready for BI dashboards or further machine learning pipelines. 🚀
+
+---
+
+## Learning Outcomes
+
+* Hands-on experience with **PySpark, PostgreSQL, DBT, Airflow, and Docker**.
+* Built a **production-grade financial analytics pipeline**.
+* Learned **data cleaning, feature engineering, aggregation, anomaly detection, and orchestration**.
+* Developed a **portfolio-ready project** simulating real-world investment analytics.
+
+---
+
+## Future Improvements
+
+* Integrate **AWS S3** for scalable storage.
+* Add data governance tools (e.g., **Alation**) for lineage and quality.
+* Implement **incremental DBT models** for daily updates.
+* Add **real-time streaming ingestion** with Kafka or Spark Structured Streaming.
+* Enhance dashboarding using **Streamlit, PowerBI, or Metabase**.
