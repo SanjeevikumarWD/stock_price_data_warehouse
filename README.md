@@ -10,7 +10,7 @@ This project builds a data warehouse for stock price data, simulating financial 
 
 
 
-- Data: Synthetic dataset of 1,000 stock price records (columns: stock_id, date, price, volume).
+- Data: Synthetic dataset of 100K stock price records (columns: stock_id, date, price, volume).
 
 
 
