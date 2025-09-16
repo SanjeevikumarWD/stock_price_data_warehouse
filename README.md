@@ -143,7 +143,7 @@ docker run --network host -v $(pwd)/data:/app/data -v $(pwd)/sql:/app/sql -v $(p
 
 
 
-- Processed 1,000 stock price records.
+- Processed 100K stock price records.
 
 
 
