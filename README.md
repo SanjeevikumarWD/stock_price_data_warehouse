@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project simulates a financial analytics pipeline for stock price data, inspired by real-world use cases like Barclays’ data engineering workflows. It builds a data warehouse using PySpark, PostgreSQL, DBT, and Apache Airflow. The pipeline automates the extraction, cleaning, enrichment, transformation, and storage of stock price data, enabling analysts and traders to derive actionable insights. 📊
+This project simulates a financial analytics pipeline for stock price data, inspired by real-world use cases like Barclays’ data engineering workflows. It builds a data warehouse using PySpark, PostgreSQL, DBT, and Apache Airflow. The pipeline automates the extraction, cleaning, enrichment, transformation, and storage of stock price data, enabling analysts and traders to derive actionable insights.. 📊
 
 ---
 
