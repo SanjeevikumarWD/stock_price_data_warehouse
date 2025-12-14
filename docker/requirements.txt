@@ -1,1 +1,2 @@
+Requirements
 pandas==2.2.2 faker==25.0.0 psycopg2-binary==2.9.9 dbt-core==1.8.0 dbt-postgres==1.8.0
