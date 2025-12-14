@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from faker import Faker
-
+# faker for data
 fake = Faker()
 
 stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
